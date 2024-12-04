@@ -1,0 +1,26 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">Главная</a></li>
+            <li><a href="{% url 'topics' %}">Список топиков</a></li>
+            <li><a href="{% url 'profile' %}">Мой профиль</a></li>
+            <li><a href="{% url 'register' %}">Регистрация</a></li>
+            <li><a href="{% url 'login_user' %}">Войти</a></li>
+            <li><a href="{% url 'logout_user' %}">Выйти</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        {% block content %}
+        <!-- Основной контент страниц будет вставляться сюда -->
+        {% endblock %}
+    </div>
+</body>
+</html>
