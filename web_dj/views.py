@@ -56,7 +56,7 @@ def article_del(request: HttpRequest, article_id: int) -> HttpResponse:
 
 def article_create(request: HttpRequest) -> HttpResponse:
     """Страница, на которой мы будем создавать новые статьи."""
-    return render(request, 'my_feed.html')
+    return render(request, 'article_create.html')
 
 
 def topics(request: HttpRequest) -> HttpResponse:
@@ -66,7 +66,7 @@ def topics(request: HttpRequest) -> HttpResponse:
 
 def topic_articles(request: HttpRequest, topic_id: int) -> HttpResponse:
     """Страница, со всеми статьями по определенной теме #"""
-    return render(request, 'article_upd.html', {'topic_id': topic_id})
+    return render(request, 'topic_articles.html', {'topic_id': topic_id})
 
 
 def topic_subscribe(request: HttpRequest, topic_id: int) -> HttpResponse:
@@ -109,6 +109,6 @@ def articles_by_date(request: HttpRequest, year: int, month: int) -> HttpRespons
     В случае запроса не настоящей даты, должна быть ошибка."""
     try:
         datetime.date(year, month, 1)
-        return render(request, 'article_upd.html', {'year': year, 'month': month})
+        return render(request, 'articles_by_date.html', {'year': year, 'month': month})
     except ValueError:
         return HttpResponseNotFound("В случае запроса не настоящей даты, должна быть ошибка.")
