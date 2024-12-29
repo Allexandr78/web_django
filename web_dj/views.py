@@ -1,40 +1,36 @@
 """
 Модуль предназначен для реализации основных функций обработки данных.
 
-Описание:
-- В этом модуле реализованы функции для чтения, обработки и вывода данных.
-- Модуль нацелен на обработку текстовых файлов и может быть расширен для работы с другими форматами.
-
-Функции:
-- read_data(filepath): функция для чтения данных из файла.
-- process_data(data): функция для обработки данных.
-- output_data(processed_data): функция для вывода обработанных данных.
-
-Дата создания: 01.12.2024
-Версия: 1.0
 """
 import datetime
+
+from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, request
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
+
+from .models import Article
+from .models import Topic
 
 
 def home(request: HttpRequest) -> HttpResponse:
     """ Основная страница, на которой будет список всех статей."""
-    return render(request, 'home.html')
+
+    articles = Article.objects.all().order_by('-created_at')
+    return render(request, 'home.html', {'articles': articles})
 
 
 def my_feed(request: HttpRequest) -> HttpResponse:
     """Страница, на которой будут только статьи по темам, на которые подписан пользователь."""
-    return render(request, 'my_feed.html')
+    topic_ids = Topic.objects.filter(subscribe=request.user).values_list('name', flat=True)
+    article = Article.objects.filter(subscribers__name__in=topic_ids).values_list('title', flat=True)
+
+    return render(request, 'my_feed.html', {'topics_ids': topic_ids, 'articles': article})
 
 
 def article_detail(request: HttpRequest, article_id: int) -> HttpResponse:
     """Страница, на которой будет отображаться статья по id."""
-    if article_id:
-        return render(request, 'article_detail.html', {'article_id': article_id})
-    else:
-        return HttpResponseNotFound("Статья не найдена.")
-
+    article = get_object_or_404(Article, id=article_id)
+    return render(request, 'article_detail.html', {'article': article})
 
 
 def add_comment(request: HttpRequest, article_id: int) -> HttpResponse:
@@ -45,7 +41,8 @@ def add_comment(request: HttpRequest, article_id: int) -> HttpResponse:
 
 def article_upd(request: HttpRequest, article_id: int) -> HttpResponse:
     """Страница, которую мы будем использовать для изменения существующей статьи #"""
-    return render(request, 'article_upd.html', {'article_id': article_id})
+    article = get_object_or_404(Article, id=article_id)
+    return render(request, 'article_upd.html', {'article_id': article_id, 'article': article})
 
 
 def article_del(request: HttpRequest, article_id: int) -> HttpResponse:
@@ -61,7 +58,8 @@ def article_create(request: HttpRequest) -> HttpResponse:
 
 def topics(request: HttpRequest) -> HttpResponse:
     """Страница, с перечнем всех тем на сайте."""
-    return render(request, 'topics.html')
+    topic_titles = Topic.objects.all().values_list('name', flat=True)
+    return render(request, 'topics.html', {'topics': topic_titles})
 
 
 def topic_articles(request: HttpRequest, topic_id: int) -> HttpResponse:
@@ -109,6 +107,7 @@ def articles_by_date(request: HttpRequest, year: int, month: int) -> HttpRespons
     В случае запроса не настоящей даты, должна быть ошибка."""
     try:
         datetime.date(year, month, 1)
-        return render(request, 'articles_by_date.html', {'year': year, 'month': month})
+        articles_date = Article.objects.filter(created_at__year=year, created_at__month=month)
+        return render(request, 'articles_by_date.html', {'year': year, 'month': month, 'articles': articles_date})
     except ValueError:
         return HttpResponseNotFound("В случае запроса не настоящей даты, должна быть ошибка.")

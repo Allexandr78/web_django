@@ -24,7 +24,7 @@ class Topic(models.Model):
         """"
         Title name
         """
-        return str(self.title)
+        return str(self.name)
 
 
 class Article(models.Model):
@@ -32,9 +32,10 @@ class Article(models.Model):
     Статья.
     """
     title = models.CharField(max_length=200, null=False, blank=False)
-    author = models.OneToOneField(User, on_delete=models.CASCADE)
-    subscribers = models.ManyToManyField(Topic)
     content = models.TextField(null=False, blank=False)
+    author = models.OneToOneField(User, on_delete=models.CASCADE)
+    subscribers = models.ManyToManyField('Topic', related_name="articles")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         """"
@@ -49,5 +50,8 @@ class Comment(models.Model):
     """
     content = models.TextField(null=False, blank=False, )
     author = models.ForeignKey(User, on_delete=models.CASCADE, )
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, )
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.article}"

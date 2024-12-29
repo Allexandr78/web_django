@@ -6,6 +6,19 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Страница, которую мы будем использовать для изменения существующей статьи. {{ article_id }}</h1>
-    <!-- Дополнительный контент для главной страницы -->
+
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content }}</p>
+    <p>Автор: {{ article.author }}</p>
+    <p>Дата публикации: {{ article.created_at|date:"Y-m-d" }}</p>
+
+    <h2>Комментарии</h2>
+    <ul>
+        {% for comment in article.comments.all %}
+            <li>Комментарий: {{ comment.content }}</li>
+            <li>Автор: {{ comment.author }}</li>
+        {% empty %}
+            <li>Комментариев пока нет.</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

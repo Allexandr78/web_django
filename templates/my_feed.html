@@ -2,10 +2,28 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Мой канал
+    Лента
 {% endblock %}
 
 {% block content %}
-<h1>Добро пожаловать в канал!</h1>
-<!-- Дополнительный контент для главной страницы -->
+    <h1>Добро пожаловать в ленту!</h1>
+    <ul>
+        <br>
+        {% for i in topics_ids %}
+            <li>
+                <p> Вы подписаны на Тему "{{ i }}"</p>
+            </li>
+            <br>
+
+        {% endfor %}
+        <p> Статьи на тему:</p>
+        {% for a in articles %}
+            <li>
+                {{ a }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button class="shiny-cta">
+        <a href="{% url 'topics' %}"><span>Темы</span></a>
+    </button>
 {% endblock %}

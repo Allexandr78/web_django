@@ -1,32 +1,46 @@
-<!-- templates/base.html -->
+ю<!-- templates/base.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Мой сайт{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/buton.css' %}">
 </head>
 <body>
-<nav>
-    <ul>
-        <li><a href="{% url 'home' %}">Главная</a></li>
-        <li><a href="{% url 'my-feed' %}">Мой канал</a></li>
-        <li><a href="{% url 'article_detail' article_id=42 %}">Подробнее</a>
-        <li><a href="{% url 'article_upd' article_id=23 %}">Правка статью</a></li>
-        <li><a href="{% url 'article_create' %}">Новая статью</a></li>
-        <li><a href="{% url 'topics' %}">Список топиков</a></li>
-        <li><a href="{% url 'topic_articles' topic_id=25 %}">Список топиков по теме</a></li>
-        <li><a href="{% url 'articles_by_date' year=2002 month=12 %}">Статьи по дате</a></li>
-        <li><a href="{% url 'profile' %}">Мой профиль</a></li>
-        <li><a href="{% url 'register' %}">Регистрация</a></li>
-        <li><a href="{% url 'set_password' %}">Изменить пароль</a></li>
-        <li><a href="{% url 'login_user' %}">Войти</a></li>
-    </ul>
-</nav>
+<header>
+    <h1>BLOG</h1>
+</header>
 
-<div>
+<div class="home">
     {% block content %}
         <!-- Основной контент страниц будет вставляться сюда -->
     {% endblock %}
 </div>
+<div class="menu-trigger">
+    <div class="bars"><span></span><span></span><span></span></div>
+    <p>MENU</p>
+    <div class="menu">
+        <ul>
+            <li><a href="{% url 'home' %}"> Главная </a></li>
+            <li><a href="{% url 'article_detail' article_id=1 %}">Подробнее</a></li>
+            <li><a href="{% url 'my-feed' %}">Мой канал</a></li>
+            <li><a href="{% url 'article_upd' article_id=2%}">Правка статьи</a></li>
+            <li><a href="{% url 'article_create' %}">Новая статья</a></li>
+            <li><a href="{% url 'topics' %}">Список топиков</a></li>
+            <li><a href="{% url 'topic_articles' topic_id=25 %}">Список топиков по теме</a></li>
+            <li><a href="{% url 'articles_by_date' year=2024 month=11 %}">Статьи по дате</a></li>
+            <li><a href="{% url 'profile' %}">Мой профиль</a></li>
+            <li><a href="{% url 'register' %}">Регистрация</a></li>
+            <li><a href="{% url 'set_password' %}">Изменить пароль</a></li>
+            <li><a href="{% url 'login_user' %}">Войти</a></li>
+        </ul>
+    </div>
+</div>
+
+<footer>
+    ©Copyright 2024 Alexandr78. All rights reversed.
+</footer>
 </body>
 </html>

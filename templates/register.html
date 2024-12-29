@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block content %}
-<h1>Страница, регистрацией нового пользователя</h1>
-<!-- Дополнительный контент для страницы профиля -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>
 {% endblock %}
