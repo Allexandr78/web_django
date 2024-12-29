@@ -1,0 +1,19 @@
+<!-- templates/topics.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+    Список топиков
+{% endblock %}
+
+{% block content %}
+    <h1>Список топиков</h1>
+
+    <ul>
+        {% for i in topics %}
+            <li>
+               <p> Темы статей: "{{ i }}"</p>
+            </li>
+
+        {% endfor %}
+    </ul>
+{% endblock %}
